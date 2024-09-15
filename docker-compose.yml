@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres:14.2-alpine
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: hyn
+      POSTGRES_USER: hyn_user
+      POSTGRES_PASSWORD: hyn_passcode
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+    environment:
+      POSTGRES_DB: hyn
+      POSTGRES_USER: hyn_user
+      POSTGRES_PASSWORD: hyn_passcode
+      
+
+volumes:
+  postgresql-data:
+    driver: local
