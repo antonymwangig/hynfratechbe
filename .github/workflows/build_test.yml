@@ -29,7 +29,7 @@ jobs:
 
       - name: Analysing the code with pylint
         run: |
-          python -m pylin **/*.py
+          python -m pylint **/*.py
           
       - name: Run tests
         run: python manage.py test
