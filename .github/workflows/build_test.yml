@@ -1,6 +1,6 @@
 name: Build and  Test
 
-on: [build_test_call]
+on: [workflow_call]
 
 jobs:
   build_and_test:
