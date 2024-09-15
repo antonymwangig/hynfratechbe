@@ -1,5 +1,4 @@
 name: Build and  Test
-
 on:
   push:
     branches: [ main ]
@@ -9,13 +8,13 @@ jobs:
     container: python:3.12-bookworm
     services:
 
-    db:
-      image: postgres:14.2-alpine
-      env:
-        POSTGRES_DB: hyn
-        POSTGRES_USER: hyn_user
-        POSTGRES_PASSWORD: hyn_passcode
-      
+      db:
+        image: postgres:14.2-alpine
+        env:
+          POSTGRES_DB: hyn
+          POSTGRES_USER: hyn_user
+          POSTGRES_PASSWORD: hyn_passcode
+        
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
