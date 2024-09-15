@@ -1,7 +1,7 @@
 name: Build and  Test
-on:
-  push:
-    branches: [ main ]
+
+on: [build_test_call]
+
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
