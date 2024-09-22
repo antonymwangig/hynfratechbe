@@ -23,3 +23,7 @@ class VirtualMachine(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.name
+    class Meta:
+        permissions = [
+            ("can_change_vm_owner", "Move VMs between users"),
+        ]

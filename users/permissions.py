@@ -6,4 +6,9 @@ class IsAdmin(BasePermission):
 
 class IsStandardUser(BasePermission):
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='Standard_User').exists()
+        return request.user.groups.filter(name='Standard User').exists()
+
+
+class IsGuest(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.groups.filter(name='Guest').exists()
