@@ -8,6 +8,7 @@ ENV PYTHONPATH .
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends build-essential \
+    && apt-get install libvirt-dev \
     && apt-get install pkg-config \
     && apt-get clean 
 
