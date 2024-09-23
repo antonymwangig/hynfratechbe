@@ -36,6 +36,9 @@ jobs:
             LogLevel ERROR
             StrictHostKeyChecking no
           END
+      - name: Test SSH connection
+        run: |
+          ssh -vvv target "echo 'SSH connection successful'"
       - name: Run deploy
         run: |
           ssh target "cd hynfratechbe/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"
