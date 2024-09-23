@@ -1,10 +1,10 @@
 name: Dev CICD
 on:
   push:
-    branches: [ dev ]
+    branches: [ main ]
 
 concurrency:
-  group: dev
+  group: main
   cancel-in-progress: true
 
 jobs:
@@ -19,19 +19,19 @@ jobs:
     steps:
       - name: Setup SSH
         env:
-          DEV_SSH_PRIVATE_KEY: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
-          DEV_SSH_HOST: ${{ secrets.DEV_SSH_HOST }}
-          DEV_SSH_PORT: ${{ secrets.DEV_SSH_PORT }}
-          DEV_SSH_USER: ${{ secrets.DEV_SSH_USER }}
+          PROD_SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          PROD_SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          PROD_SSH_PORT: ${{ secrets.PROD_SSH_PORT }}
+          PROD_SSH_USER: ${{ secrets.PROD_SSH_USER }}
         run: |
           mkdir -p ~/.ssh/
           echo "$DEV_SSH_PRIVATE_KEY" > ~/.ssh/github
           chmod 600 ~/.ssh/github
           cat >>~/.ssh/config <<END
           Host target
-            HostName $DEV_SSH_HOST
-            User $DEV_SSH_USER
-            Port $DEV_SSH_PORT
+            HostName $PROD_SSH_HOST
+            User $PROD_SSH_USER
+            Port $PROD_SSH_PORT
             IdentityFile ~/.ssh/github
             LogLevel ERROR
             StrictHostKeyChecking no
