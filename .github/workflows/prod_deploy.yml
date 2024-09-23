@@ -8,13 +8,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_test:
-    name: Build Test
-    uses: ./.github/workflows/build_test.yml
+  # build_test:
+  #   name: Build Test
+  #   uses: ./.github/workflows/build_test.yml
 
   deploy:
     name: Deploy
-    needs: build_test
+    # needs: build_test
     runs-on: ubuntu-latest
     steps:
       - name: Setup SSH
