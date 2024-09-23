@@ -25,8 +25,9 @@ jobs:
           PROD_SSH_USER: ${{ secrets.PROD_SSH_USER }}
         run: |
           mkdir -p ~/.ssh/
-          echo "$PROD_SSH_PRIVATE_KEY" > ~/.ssh/github
+          echo "$PROD_SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/github
           chmod 600 ~/.ssh/github
+          ssh-add ~/.ssh/github
           cat >>~/.ssh/config <<END
           Host target
             HostName $PROD_SSH_HOST
