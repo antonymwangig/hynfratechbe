@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'users',
     'rest_framework',
     'rest_framework_simplejwt',
+    'projects',
+    'vms',
+    'plans'
     
     
 
@@ -90,7 +93,7 @@ DATABASES = {
         "NAME": config('POSTGRES_NAME'),
         "USER": config('POSTGRES_USER'),
         "PASSWORD": config('POSTGRES_PASSWORD'),
-        "HOST": 'db',
+        "HOST": '192.168.43.251',
         "PORT": '5432',
         }
 }
