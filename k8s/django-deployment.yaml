@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: django-deployment
+  name: hynfratech
   labels:
     app: hynfratech
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: hynfratech
