@@ -63,10 +63,7 @@ jobs:
           
           echo "Applying Kubernetes manifests... hyn app"
           kubectl apply -f k8s/django-deployment.yaml || { echo 'kubectl apply failed'; exit 1; }
-
-          echo "Checking rollout status..."
-          kubectl rollout status deployment/django-config.yaml || { echo 'django config rollout failed'; exit 1; }
-
+          
           echo "Checking rollout status..."
           kubectl rollout status deployment/django-deployment.yaml || { echo 'Deployment rollout failed'; exit 1; }
 

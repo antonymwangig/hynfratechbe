@@ -20,10 +20,16 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
-        envFrom:
-          - configMapRef:
-            name: django-secret
-
+        env:
+        env:
+          - name: POSTGRES_USER
+            value: "hyn_user"
+          - name: POSTGRES_PASSWORD
+            value: "hyn_passcode"
+          - name: POSTGRES_DB
+            value: "hyn"
+          - name: DATABASE_URL
+              value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)
 # Allowing External Access using a Service
 ---
 apiVersion: v1
