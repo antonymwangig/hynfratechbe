@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: postgres
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: postgres
@@ -13,21 +13,18 @@ spec:
         app: postgres
     spec:
       containers:
-      - name: postgres
-        image: postgres:14.2-alpine
-        ports:
-        - containerPort: 5432
-        env:
-        - name: POSTGRES_DB
-          value: "hyn"
-        - name: POSTGRES_USER
-          value: "hyn_user"
-        - name: POSTGRES_PASSWORD
-          value: "hyn_passcode"
-        volumeMounts:
-        - name: postgres-storage
-          mountPath: /var/lib/postgresql/data
-  volumes:
-  - name: postgres-storage
-    persistentVolumeClaim:
-      claimName: postgres-pv-claim
+        - name: postgres
+          image: 'postgres:14'
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-secret
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresdata
+      volumes:
+        - name: postgresdata
+          persistentVolumeClaim:
+            claimName: postgres-volume-claim
