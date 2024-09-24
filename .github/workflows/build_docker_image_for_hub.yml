@@ -1,9 +1,6 @@
 name: ci
 
-on:
-  push:
-    branches: main
-
+on: [workflow_call]
 jobs:
   login:
     runs-on: ubuntu-latest
