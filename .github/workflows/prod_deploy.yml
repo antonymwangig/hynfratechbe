@@ -8,13 +8,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_docker_image_for_hub:
-    name: Build docker for hub
-    uses: ./.github/workflows/build_docker_image_for_hub.yml
+  # build_docker_image_for_hub:
+  #   name: Build docker for hub
+  #   uses: ./.github/workflows/build_docker_image_for_hub.yml
 
   deploy:
     name: Deploy
-    needs: build_docker_image_for_hub
+    # needs: build_docker_image_for_hub
     runs-on: ubuntu-latest
 
     steps:
