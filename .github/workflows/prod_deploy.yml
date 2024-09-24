@@ -32,7 +32,9 @@ jobs:
             LogLevel ERROR
             StrictHostKeyChecking no
           END
-
+      - name: Run deploy Docker
+        run: |
+          ssh target "cd hynfratechbe/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"
       - name: Deploy to Kubernetes
         run: |
           ssh target << 'EOF'
