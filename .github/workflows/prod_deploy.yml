@@ -82,20 +82,13 @@ jobs:
           cd hynfratechbe/
           git pull || { echo 'git pull failed'; exit 1; }
 
-          echo "Applying Kubernetes manifests... pvc-postgres  config"
-          kubectl apply -f k8s/ps-config.yaml || { echo 'kubectl pvc-postgres apply failed'; exit 1; }
-
-          echo "Applying Kubernetes manifests... postgres pv"
-          kubectl apply -f k8s/psql-pv.yaml || { echo 'kubectl postgres apply failed'; exit 1; }
-
-          echo "Applying Kubernetes manifests.. claim."
-          kubectl apply -f k8s/psql-claim.yaml || { echo 'kubectl posgres service apply failed'; exit 1; }
+          
           
           echo "Applying Kubernetes manifests.. postgs deploy."
-          kubectl apply -f k8s/postgres.yaml || { echo 'kubectl posgres service apply failed'; exit 1; }
+          kubectl apply -f k8s/ps-pv.yaml || { echo 'kubectl posgres service apply failed'; exit 1; }
           
           echo "Applying Kubernetes manifests.. service."
-          kubectl apply -f k8s/ps-service.yaml || { echo 'kubectl posgres service apply failed'; exit 1; }
+          kubectl apply -f k8s/ps.yaml || { echo 'kubectl posgres service apply failed'; exit 1; }
           
           echo "Applying Kubernetes manifests... hyn app"
           kubectl apply -f k8s/django-deployment.yaml || { echo 'kubectl apply failed'; exit 1; }
