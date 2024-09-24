@@ -37,4 +37,4 @@ jobs:
 
   deploy:
     name: Deploy
-    uses: ./.github/workflows/prod_deploy.yml
+    uses: ./.github/workflows/prod_docker_deploy.yml
