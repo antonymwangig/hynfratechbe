@@ -1,8 +1,8 @@
 name: PROD DEPLOY
-# on: [workflow_call]
-on:
-  push:
-    branches: [ main ]
+on: [workflow_call]
+# on:
+#   push:
+#     branches: [ main ]
 concurrency:
   group: main
   cancel-in-progress: true
