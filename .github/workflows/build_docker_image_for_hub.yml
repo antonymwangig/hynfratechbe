@@ -26,3 +26,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  deploy:
+    name: Deploy
+    uses: ./.github/workflows/prod_deploy.yml
