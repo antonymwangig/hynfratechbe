@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hyn-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hyn-app
+  template:
+    metadata:
+      labels:
+        app: hyn-app
+    spec:
+      containers:
+      - name: django
+        image: antonymwangig/hynfratech:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: POSTGRES_DB
+          value: "hyn"
+        - name: POSTGRES_USER
+          value: "hyn_user"
+        - name: POSTGRES_PASSWORD
+          value: "hyn_passcode"
+        command: ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

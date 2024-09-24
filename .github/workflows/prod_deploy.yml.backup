@@ -1,0 +1,41 @@
+name: Dev CICD
+# on:
+#   push:
+#     branches: [ main ]
+
+concurrency:
+  group: main
+  cancel-in-progress: true
+
+jobs:
+  # build_test:
+  #   name: Build Test
+  #   uses: ./.github/workflows/build_test.yml
+
+  deploy:
+    name: Deploy
+    # needs: build_test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup SSH
+        env:
+          PROD_SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          PROD_SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          PROD_SSH_PORT: ${{ secrets.PROD_SSH_PORT }}
+          PROD_SSH_USER: ${{ secrets.PROD_SSH_USER }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$PROD_SSH_PRIVATE_KEY" > ~/.ssh/github
+          chmod 600 ~/.ssh/github
+          cat >>~/.ssh/config <<END
+          Host target
+            HostName $PROD_SSH_HOST
+            User $PROD_SSH_USER
+            Port $PROD_SSH_PORT
+            IdentityFile ~/.ssh/github
+            LogLevel ERROR
+            StrictHostKeyChecking no
+          END
+      - name: Run deploy
+        run: |
+          ssh target "cd hynfratechbe/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"

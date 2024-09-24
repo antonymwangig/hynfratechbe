@@ -1,22 +1,26 @@
-name: Dev CICD
+name: PROD DEPLOY
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 concurrency:
   group: main
   cancel-in-progress: true
 
 jobs:
-  # build_test:
-  #   name: Build Test
-  #   uses: ./.github/workflows/build_test.yml
+  build_docker_image_for_hub:
+    name: Build docker for hub
+    uses: ./.github/workflows/build_docker_image_for_hub.yml
 
   deploy:
     name: Deploy
-    # needs: build_test
+    needs: build_docker_image_for_hub
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
       - name: Setup SSH
         env:
           PROD_SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
@@ -36,6 +40,33 @@ jobs:
             LogLevel ERROR
             StrictHostKeyChecking no
           END
-      - name: Run deploy
+
+      - name: Deploy to Kubernetes
         run: |
-          ssh target "cd hynfratechbe/ && docker-compose down && git pull && docker-compose build && docker-compose up -d --force-recreate"
+          ssh target << 'EOF'
+          set -e
+
+          echo "Pulling the latest code..."
+          cd hynfratechbe/
+          git pull || { echo 'git pull failed'; exit 1; }
+
+          echo "Applying Kubernetes manifests... pvc-postgres "
+          kubectl apply -f k8s/pvc-postgres.yaml || { echo 'kubectl pvc-postgres apply failed'; exit 1; }
+
+          echo "Applying Kubernetes manifests... postgres"
+          kubectl apply -f k8s/postgres.yaml || { echo 'kubectl postgres apply failed'; exit 1; }
+
+          echo "Applying Kubernetes manifests..."
+          kubectl apply -f k8s/postgres-service.yaml || { echo 'kubectl posgres service apply failed'; exit 1; }
+          
+          echo "Applying Kubernetes manifests... hyn app"
+          kubectl apply -f k8s/hyn-app.yaml || { echo 'kubectl apply failed'; exit 1; }
+
+          echo "Applying Kubernetes manifests.. hyn app service."
+          kubectl apply -f k8s/hyn-app-service.yaml || { echo 'kubectl apply failed hyn app service'; exit 1; }
+
+          echo "Checking rollout status..."
+          kubectl rollout status deployment/hyn-deployment || { echo 'Deployment rollout failed'; exit 1; }
+
+          echo "Kubernetes deployment successful!"
+          EOF
