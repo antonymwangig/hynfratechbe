@@ -5,7 +5,7 @@ metadata:
   labels:
     app: hynfratech
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: hynfratech
@@ -25,13 +25,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: django-service
+  name: hynfratech
   labels:
     app: hynfratech
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-  - port: 80
+  - port: 8000
     targetPort: 8000
   selector:
     app: hynfratech
