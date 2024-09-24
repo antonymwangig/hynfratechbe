@@ -26,6 +26,7 @@ services:
       POSTGRES_USER: hyn_user
       POSTGRES_PASSWORD: hyn_passcode
       
+      
 
 volumes:
   postgresql-data:

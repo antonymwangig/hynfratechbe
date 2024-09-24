@@ -13,7 +13,8 @@ class VirtualMachineViewSet(viewsets.ModelViewSet):
 
 class CreateVMAPIView(views.APIView):
     permission_classes=[permissions.AllowAny]
-    def post(self, request):
+    def post(self, request,data):
+        
         vm_name = f"example-vm-{uuid.uuid4()}"
         disk_image_path = f"/var/lib/libvirt/images/{vm_name}.qcow2"
         xml_config =f"""
@@ -48,7 +49,7 @@ class CreateVMAPIView(views.APIView):
                 check=True
             )
         except subprocess.CalledProcessError as e:
-            return JsonResponse({'error': f'Failed to create disk image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return response.Response({'error': f'Failed to create disk image: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         conn = libvirt.open('qemu:///system')
         if conn is None:
@@ -56,6 +57,7 @@ class CreateVMAPIView(views.APIView):
 
         try:
             vm = conn.createXML(xml_config, 0)
+            VirtualMachine.objects.create
             return response.Response({'status': 'VM created', 'name': vm.name()}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return response.Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

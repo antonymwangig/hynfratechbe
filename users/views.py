@@ -9,9 +9,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from users.serializers import LoginSerializer, SignupSerializer, UserSerializer
 import requests
 
-from users.verify_counsellor import verify
-
-
 User = get_user_model()
 
 GOOGLE_USER_INFO_URL = 'https://www.googleapis.com/oauth2/v3/userinfo'
@@ -124,6 +121,5 @@ class GoogleLoginAPIView(APIView):
         return response.json()
     
     
-verify("antonymwangig@gmail.com")
 
         
