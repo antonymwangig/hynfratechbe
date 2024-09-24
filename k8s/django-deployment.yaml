@@ -29,7 +29,7 @@ spec:
           - name: POSTGRES_DB
             value: "hyn"
           - name: DATABASE_URL
-              value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)
+            value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)
 # Allowing External Access using a Service
 ---
 apiVersion: v1
