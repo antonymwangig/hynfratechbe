@@ -37,4 +37,5 @@ jobs:
 
   deploy:
     name: Deploy
+    needs: build_and_push
     uses: ./.github/workflows/prod_deploy.yml
