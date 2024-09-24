@@ -1,27 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hyn-app
+  name: django-deployment
+  labels:
+    app: hynfratech
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: hyn-app
+      app: hynfratech
   template:
     metadata:
       labels:
-        app: hyn-app
+        app: hynfratech
     spec:
       containers:
-      - name: django
+      - name: django-container
         image: antonymwangig/hynfratech:latest
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
-        env:
-        - name: POSTGRES_DB
-          value: "hyn"
-        - name: POSTGRES_USER
-          value: "hyn_user"
-        - name: POSTGRES_PASSWORD
-          value: "hyn_passcode"
-        command: ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+# Allowing External Access using a Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+  labels:
+    app: hynfratech
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    app: hynfratech
