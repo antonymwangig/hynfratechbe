@@ -25,9 +25,14 @@ services:
       POSTGRES_DB: hyn
       POSTGRES_USER: hyn_user
       POSTGRES_PASSWORD: hyn_passcode
+    volumes:
+      - /var/lib/libvirt/images/:/var/lib/libvirt/images/
       
       
 
 volumes:
   postgresql-data:
     driver: local
+  libvirt-images:
+    driver: local
+  
