@@ -41,11 +41,27 @@ class CreateVMAPIView(views.APIView):
                     <target dev='vda' bus='virtio'/>
                     <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
                 </disk>
+                    <!-- First Network Interface (NAT) -->
                 <interface type='network'>
                     <source network='default'/>
                     <model type='virtio'/>
                     <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
                 </interface>
+                
+                <!-- Second Network Interface (Bridge) -->
+                <interface type='bridge'>
+                    <source bridge='br0'/>
+                    <model type='virtio'/>
+                    <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
+                </interface>
+
+                <!-- QEMU Guest Agent Channel -->
+                <channel type='unix'>
+                    <source mode='bind'/>
+                    <target type='virtio' name='org.qemu.guest_agent.0'/>
+                    <alias name='channel0'/>
+                </channel>
+
             </devices>
         </domain>
         """
