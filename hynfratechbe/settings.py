@@ -56,8 +56,14 @@ INSTALLED_APPS = [
 
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://antonymwangig.site',
+    # Add other trusted domains if necessary
+]
+Ch
 MIDDLEWARE = [
-     "corsheaders.middleware.CorsMiddleware",
+    'django.middleware.csrf.CsrfViewMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
