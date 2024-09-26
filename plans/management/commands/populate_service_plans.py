@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from your_app_name.models import ServicePlan
+from plans.models import ServicePlan
 
 class Command(BaseCommand):
     help = 'Populate the ServicePlan model with initial data'
@@ -42,7 +42,7 @@ class Command(BaseCommand):
 
         for plan in plans:
             if not ServicePlan.objects.filter(name=plan['name']).exists():
-                ServicePlan.objects.create(
+                ServicePlan.objects.get_or_create(
                     name=plan['name'],
                     price=plan['price'],
                     features=plan['features'],

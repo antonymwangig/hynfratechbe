@@ -5,14 +5,18 @@ from users.models import User
 
 class VirtualMachine(models.Model):
     VM_STATES = [
-        ('running', 'Running'),
-        ('stopped', 'Stopped'),
-        ('paused', 'Paused'),
-        ('suspended', 'Suspended'),
+        ('Running', 'Running'),
+        ('Blocked', 'Blocked'),
+        ('Paused', 'Paused'),
+        ('Shutdown', 'Shutdown'),        
+        ('Shutoff', 'Shutoff'),        
+        ('Crashed', 'Crashed'),        
+        ('No state', 'No state'),
+        ('Unknown', 'Unknown'),
     ]
     name = models.CharField(max_length=100)
     vm_name= models.CharField(max_length=100,unique=True)
-    state = models.CharField(max_length=10, choices=VM_STATES, default='stopped')
+    state = models.CharField(max_length=10, choices=VM_STATES, default='Unknown')
     vcpu_count = models.IntegerField(default=1)
     memory_size = models.IntegerField(help_text='Memory size in KIB')
     disk_size = models.IntegerField(help_text='Disk size in GB')

@@ -1,13 +1,21 @@
+import requests
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status 
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny,IsAdminUser,IsAuthenticated
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.models import Group, Permission
+
+
 from users.serializers import LoginSerializer, SignupSerializer, UserSerializer
-import requests
+from users.logger import  log_user_action
+
+
 
 User = get_user_model()
 
@@ -42,6 +50,10 @@ class SignupAPIView(APIView):
             first_name=serializer.validated_data['email'].split(" ")[0],
             last_name=serializer.validated_data['email'].split(" ")[0]            
             )
+        group, created=Group.objects.get_or_create(name='Standard User  ')
+        user.groups.add(group)
+        user.save()
+
         user.set_password(serializer.validated_data['password'])
         user.save()
         access_token, refresh_token = userToken.generate_tokens_for_user(user)
@@ -50,6 +62,7 @@ class SignupAPIView(APIView):
             'access_token': str(access_token),
             'refresh_token': str(refresh_token)
         }
+        log_user_action(user,"SIGN UP","ACCOUTN SIGN UP")
         return Response(response_data ,status=status.HTTP_201_CREATED)
     
     
@@ -71,6 +84,7 @@ class UserLoginAPIView(APIView):
             'access_token': str(access_token),
             'refresh_token': str(refresh_token)
         }
+        log_user_action(user,"SIGN IN","user logged int system")
         return Response(response_data,status=status.HTTP_200_OK)
 
 class GoogleLoginAPIView(APIView):
@@ -122,4 +136,9 @@ class GoogleLoginAPIView(APIView):
     
     
 
+class UserPermissionsView(APIView):
+    def get(self, request):
+        user = request.user
+        permissions = user.get_all_permissions()
+        return Response(list(permissions))
         

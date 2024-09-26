@@ -6,4 +6,4 @@ class VirtualMachineFilter(django_filters.FilterSet):
     state = django_filters.ChoiceFilter(choices=VirtualMachine.VM_STATES) 
     class Meta:
         model = VirtualMachine
-        fields = ['name', 'state', 'project']
+        fields = ['name', 'state']
