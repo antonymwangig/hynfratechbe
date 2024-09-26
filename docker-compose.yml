@@ -26,8 +26,8 @@ services:
       POSTGRES_USER: hyn_user
       POSTGRES_PASSWORD: hyn_passcode
     volumes:
-      - /var/lib/libvirt/images/:/var/lib/libvirt/images/
-      
+      - libvirt-images:/var/lib/libvirt/images/
+
       
 
 volumes:
