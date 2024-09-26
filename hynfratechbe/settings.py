@@ -60,7 +60,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://antonymwangig.site',
     # Add other trusted domains if necessary
 ]
-Ch
+
 MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     "corsheaders.middleware.CorsMiddleware",
